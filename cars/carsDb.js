@@ -3,7 +3,9 @@ const db = require("../seeds/dbConfig");
 module.exports = {
   get,
   getById,
-  insert
+  insert,
+  update,
+  remove
 };
 
 function get() {
@@ -20,4 +22,12 @@ function insert(car) {
     .then((ids) => {
       return getById(ids[0]);
     });
+}
+
+function update(id, changes) {
+  return db("cars").where({ id }).update(changes);
+}
+
+function remove(id) {
+  return db("cars").where("id", id).del();
 }

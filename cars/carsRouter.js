@@ -43,4 +43,31 @@ router.post("/", (req, res) => {
     });
 });
 
+router.put("/:id", (req, res) => {
+  const id = req.params.id;
+  const car = req.body;
+  if (!car.make || !car.model) {
+    res.status(400).json({
+      errorMessage: "Please provide make and model.",
+    });
+  } else {
+    Cars.update(id, car)
+      .then((item) => {
+        if (item > 0) {
+          res.status(200).json(car);
+        } else {
+          res.status(404).json({
+            message: "The post with the specified ID does not exist.",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res
+          .status(500)
+          .json({ error: "The posts information could not be retrieved." });
+      });
+  }
+});
+
 module.exports = router;
